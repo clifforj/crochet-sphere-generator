@@ -1,0 +1,32 @@
+{
+  "name": "crochet-sphere-generator",
+  "version": "1.0.0",
+  "description": "Crochet Sphere Generator (AngularJS)",
+  "main": "dist/index.html",
+  "scripts": {
+    "test": "gulp test",
+    "start": "http-server ./dist"
+  },
+  "author": "John Clifford",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.6.1",
+    "normalize.css": "^5.0.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "http-server": "^0.9.0",
+    "jasmine-core": "^2.5.2",
+    "jshint": "^2.9.4",
+    "karma": "^1.4.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "merge-stream": "^1.0.1",
+    "phantomjs": "^2.1.7"
+  }
+}

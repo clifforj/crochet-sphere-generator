@@ -1,0 +1,59 @@
+var gulp = require('gulp');
+
+var jshint = require('gulp-jshint');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var merge =  require('merge-stream');
+var Server = require('karma').Server;
+
+var jsDependencies = [
+    'node_modules/angular/angular.min.js'
+];
+
+var cssDependencies = [
+    'node_modules/normalize.css/normalize.css'
+];
+
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false
+    }, done).start();
+});
+
+gulp.task('lint', function() {
+    return gulp.src('src/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
+
+gulp.task('js', function() {
+    return gulp.src(['src/csg.module.js', 'src/**/*.js'])
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/assets/js'));
+});
+
+gulp.task('html', function() {
+   return gulp.src('src/index.html')
+       .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dependencies', function() {
+    var js = gulp.src(jsDependencies)
+        .pipe(concat('ext.min.js'))
+        .pipe(gulp.dest('dist/assets/js'));
+
+    var css =  gulp.src(cssDependencies)
+        .pipe(concat('ext.min.css'))
+        .pipe(gulp.dest('dist/assets/css'));
+    return merge(js, css);
+});
+
+gulp.task('watch', function() {
+    gulp.watch('src/**/*.js', {cwd:'./'}, ['lint', 'js']);
+    gulp.watch('src/index.html', {cwd:'./'}, ['html']);
+});
+
+gulp.task('default', ['dependencies', 'lint', 'js', 'html', 'watch']);
