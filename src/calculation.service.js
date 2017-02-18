@@ -21,17 +21,17 @@
             refreshCalculationBase(numberOfRows);
 
             var rowStitchCounts = []; // The number of stitches for each row
-            var rowDimensions = []; // The dimensions of the row for diagramming purposes
+            //var rowDimensions = []; // The dimensions of the row for diagramming purposes
 
             for(var i = 1; i < numberOfRows; i++) {
                 rowStitchCounts.push(getRowStitchCount());
 
-                var currentCos = Math.abs(Math.cos(stepAmount*i));
+                /*var currentCos = Math.abs(Math.cos(stepAmount*i));
                 var currentHeight = 1 - currentCos;
                 var calculatedHeight = Math.abs(currentHeight - prevHeight);
                 prevHeight = currentHeight;
 
-                raws.push([rawSin, calculatedHeight]);
+                raws.push([rawSin, calculatedHeight]);*/
             }
         }
 
