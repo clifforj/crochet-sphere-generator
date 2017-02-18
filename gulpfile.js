@@ -22,6 +22,13 @@ gulp.task('test', function (done) {
     }, done).start();
 });
 
+gulp.task('test-once', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
 gulp.task('lint', function() {
     return gulp.src('src/**/*.js')
         .pipe(jshint())

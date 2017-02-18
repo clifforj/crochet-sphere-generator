@@ -4,7 +4,7 @@
   "description": "Crochet Sphere Generator (AngularJS)",
   "main": "dist/index.html",
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp test-once",
     "start": "http-server ./dist"
   },
   "author": "John Clifford",
