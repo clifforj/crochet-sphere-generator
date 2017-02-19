@@ -15,6 +15,7 @@
 
         Instruction.INCREASE = 'inc';
         Instruction.DECREASE = 'dec';
+        Instruction.SINGLE = 'sc';
 
         Instruction.prototype.generateInstructionSteps = function () {
             var steps = [];
@@ -31,6 +32,8 @@
 
             if(numChange === 1) {
                 steps = this.generateStepsForSingleChange(numSingles, changeType);
+            } else if(numChange === 0) {
+                steps = [this.targetRowCount];
             }
 
             return steps;

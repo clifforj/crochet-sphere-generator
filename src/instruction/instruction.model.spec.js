@@ -20,6 +20,18 @@ describe('Instruction model', function () {
         expect(instruction.rowDimensions).toBe(mockRowDimensions);
     });
 
+    it('should generate steps for Instructions that don\'t contain a change', function () {
+        var instruction = new Instruction(0, 10, 10, mockRowDimensions);
+        var steps = instruction.generateInstructionSteps();
+
+        expect(steps).toEqual([10]);
+
+        instruction = new Instruction(0, 32, 32, mockRowDimensions);
+        steps = instruction.generateInstructionSteps();
+
+        expect(steps).toEqual([32]);
+    });
+
     it('should generate steps for Instructions that only change by one crochet', function () {
         var instruction = new Instruction(0, 10, 11, mockRowDimensions);
         spyOn(instruction, 'generateStepsForSingleChange').and.callThrough();
