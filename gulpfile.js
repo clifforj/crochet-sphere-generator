@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var merge =  require('merge-stream');
+var coveralls = require('gulp-coveralls');
 var Server = require('karma').Server;
 
 var jsDependencies = [
@@ -27,6 +28,11 @@ gulp.task('test-once', function (done) {
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, done).start();
+});
+
+gulp.task('coveralls', ['test-once'], function () {
+    gulp.src('/coverage/**/lcov.info')
+        .pipe(coveralls());
 });
 
 gulp.task('lint', function() {
@@ -64,3 +70,4 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['dependencies', 'lint', 'js', 'html', 'watch']);
+gulp.task('build', ['dependencies', 'lint', 'js', 'html', 'coveralls']);

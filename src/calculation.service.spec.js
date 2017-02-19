@@ -1,5 +1,6 @@
 describe('calculation service', function() {
     var calculationService;
+    var calculationBase;
 
     beforeEach(inject(function (_calculationService_) {
         calculationService = _calculationService_;
@@ -32,13 +33,16 @@ describe('calculation service', function() {
     });
 
     describe('getRowStitchCount', function() {
+        beforeEach(function () {
+            calculationBase = calculationService.refreshCalculationBase(15);
+        });
+
         it('should exist', function () {
             expect(calculationService.getRowStitchCount).toBeDefined();
         });
 
         // Spheres starts and end the same
         it('stitch count for first and penultimate rows should be 6', function () {
-            calculationService.refreshCalculationBase(15);
             var firstRowStitches = calculationService.getRowStitchCount(1);
             var lastRowStitches = calculationService.getRowStitchCount(14);
             expect(firstRowStitches).toBe(6);
@@ -46,13 +50,48 @@ describe('calculation service', function() {
         });
 
         it('should return the correct stitch count for a given row', function () {
-            calculationService.refreshCalculationBase(15);
             var rowStitches = calculationService.getRowStitchCount(7);
 
             // unit sphere scale * step scale
             var expectedRowSitches = Math.round(0.9945 * 28.8584);
 
             expect(rowStitches).toBe(expectedRowSitches);
+        });
+    });
+
+    describe('getRowDimensions', function() {
+        beforeEach(function () {
+            calculationBase = calculationService.refreshCalculationBase(15);
+        });
+
+        it('should exist', function () {
+            expect(calculationService.getRowDimensions).toBeDefined();
+        });
+
+        // Spheres starts and end the same
+        it('stitch return an array with 2 elements', function () {
+            var dimensions = calculationService.getRowDimensions(1);
+            expect(dimensions.length).toBe(2);
+        });
+
+        it('should return the correct dimensions for a given row with no previous calculation', function () {
+            var dimensions = calculationService.getRowDimensions(1);
+
+            var expectedWidth = '0.2079';
+            var expectedHeight = '0.02185';
+
+            expect(dimensions[0].toFixed(4)).toBe(expectedWidth);
+            expect(dimensions[1].toFixed(5)).toBe(expectedHeight);
+        });
+
+        it('should return the correct dimensions for a given row with a previous height calculation', function () {
+            var dimensions = calculationService.getRowDimensions(2, 0.02185);
+
+            var expectedWidth = '0.4067';
+            var expectedHeight = '0.06460';
+
+            expect(dimensions[0].toFixed(4)).toBe(expectedWidth);
+            expect(dimensions[1].toFixed(5)).toBe(expectedHeight);
         });
     });
 });

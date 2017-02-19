@@ -14,30 +14,47 @@
         return {
             generateInstructions: generateInstructions,
             refreshCalculationBase: refreshCalculationBase,
-            getRowStitchCount: getRowStitchCount
+            getRowStitchCount: getRowStitchCount,
+            getRowDimensions: getRowDimensions
         };
 
         function generateInstructions(numberOfRows) {
             refreshCalculationBase(numberOfRows);
 
             var rowStitchCounts = []; // The number of stitches for each row
-            //var rowDimensions = []; // The dimensions of the row for diagramming purposes
+            var currentRowDimensions;
+            var previousRowHeight = 0;
+            var rowDimensions = []; // The dimensions of the row for diagramming purposes
 
             for(var i = 1; i < numberOfRows; i++) {
-                rowStitchCounts.push(getRowStitchCount());
+                rowStitchCounts.push(getRowStitchCount(i));
 
-                /*var currentCos = Math.abs(Math.cos(stepAmount*i));
-                var currentHeight = 1 - currentCos;
-                var calculatedHeight = Math.abs(currentHeight - prevHeight);
-                prevHeight = currentHeight;
-
-                raws.push([rawSin, calculatedHeight]);*/
+                currentRowDimensions = getRowDimensions(i, previousRowHeight);
+                previousRowHeight = currentRowDimensions[1]; // Take the previous rows height to save recalculating
+                rowDimensions.push(currentRowDimensions);
             }
         }
 
         function getRowStitchCount(rowIndex) {
             var unscaledRowStitches = Math.sin(cb.radiansPerStep*rowIndex); // Stitch numbers based on a unit circle
             return Math.round(unscaledRowStitches*cb.stepScale); // Scaled up in line with the initial row size
+        }
+
+        function getRowDimensions(rowIndex, previousRowHeight) {
+            var prevHeight = previousRowHeight || 0;
+
+            if(!previousRowHeight) {
+                var prevDistFromCenter = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1)));
+                prevHeight = 1 - prevDistFromCenter;
+            }
+
+            var distFromCenter = Math.abs(Math.cos(cb.radiansPerStep*rowIndex));
+            var currentHeight = 1 - distFromCenter;
+
+            var calculatedWidth = Math.sin(cb.radiansPerStep * rowIndex); // As a percentage of max width
+            var calculatedHeight = Math.abs(currentHeight - prevHeight); // As a percentage of max height
+
+            return [calculatedWidth, calculatedHeight];
         }
 
         function refreshCalculationBase(numberOfRows) {
@@ -51,7 +68,7 @@
                 stepScale: scale
             };
 
-            return cb
+            return cb;
         }
     }
 
