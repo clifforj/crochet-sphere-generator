@@ -4,3 +4,6 @@ node_js:
   - 6.9.5
 
 script: gulp build
+
+after_script:
+  - npm run coveralls
