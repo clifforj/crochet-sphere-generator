@@ -42,7 +42,7 @@ module.exports = function (config) {
                     type: 'lcovonly'
                 },
                 {
-                    type: 'text-summary'
+                    type: 'html'
                 }
             ],
             dir: 'coverage',
