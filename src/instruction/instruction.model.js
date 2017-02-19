@@ -30,10 +30,13 @@
             var numSingles = changeType == Instruction.INCREASE ?
                 this.previousRowCount - numChange : this.targetRowCount - numChange;
 
+            // Each category of changes should be handled differently
             if(numChange === 1) {
                 steps = this.generateStepsForSingleChange(numSingles, changeType);
             } else if(numChange === 0) {
                 steps = [this.targetRowCount];
+            } else {
+                steps = this.generateStepsForMultipleChanges(numSingles, numChange, changeType);
             }
 
             return steps;
@@ -41,15 +44,46 @@
 
         Instruction.prototype.generateStepsForSingleChange = function (numSingles, changeType) {
             // Divide the number of singles (5 is arbitrary, just need something to move the change around)
-            var divided = numSingles / 5;
+            var dividedSingles = numSingles / 5;
 
             // Put the change somewhere between all the singles (based off index so change isn't always in the same place)
-            var initialSplit = Math.round(((this.rowIndex%4)+1) * divided);
+            var initialSplit = Math.round(((this.rowIndex%4)+1) * dividedSingles);
 
             // The remaining amount of singles to put after the change
             var remaining = numSingles - initialSplit;
 
             return [initialSplit, changeType, remaining];
+        };
+
+        Instruction.prototype.generateStepsForMultipleChanges = function (numSingles, numChange, changeType) {
+            var steps = [];
+            // Divide the singles so they sit infront of each change
+            var dividedSingles = numSingles/(numChange+1);
+
+            // Any singles that remain get added as the last step
+            var remainingSingles = numSingles-Math.round(dividedSingles*numChange);
+
+            var currentStepSingles;
+            for(var i = 0; i < numChange; i++) {
+                if(dividedSingles !== 0) {
+                    // Work out the singles for the current step. (number of singles until now, minus the number of
+                    // singles from the previous step)
+                    currentStepSingles = Math.round(dividedSingles * (i + 1)) - Math.round(dividedSingles * i);
+
+                    if (currentStepSingles !== 0) {
+                        steps.push(currentStepSingles);
+                    }
+                }
+
+                steps.push(changeType);
+            }
+
+            // Push any remaining singles on the end. This stops instructions all ending with a change
+            if(remainingSingles !== 0) {
+                steps.push(remainingSingles);
+            }
+
+            return steps;
         };
 
         Instruction.prototype.generateInstructionText = function () {
