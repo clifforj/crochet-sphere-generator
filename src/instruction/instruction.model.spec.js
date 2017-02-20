@@ -60,38 +60,38 @@ describe('Instruction model', function () {
         steps = instruction.generateInstructionSteps();
 
         expect(steps).toEqual([
-            3,
+            '3 sc',
             Instruction.INCREASE,
-            3,
+            '3 sc',
             Instruction.INCREASE,
-            4,
+            '4 sc',
             Instruction.INCREASE,
-            3,
+            '3 sc',
             Instruction.INCREASE,
-            3
+            '3 sc'
         ]);
 
         instruction = new Instruction(1, 58, 50, mockRowDimensions);
         steps = instruction.generateInstructionSteps();
 
         expect(steps).toEqual([
-            5,
+            '5 sc',
             Instruction.DECREASE,
-            4,
+            '4 sc',
             Instruction.DECREASE,
-            5,
+            '5 sc',
             Instruction.DECREASE,
-            5,
+            '5 sc',
             Instruction.DECREASE,
-            4,
+            '4 sc',
             Instruction.DECREASE,
-            5,
+            '5 sc',
             Instruction.DECREASE,
-            5,
+            '5 sc',
             Instruction.DECREASE,
-            4,
+            '4 sc',
             Instruction.DECREASE,
-            5
+            '5 sc'
         ]);
     });
 
@@ -99,12 +99,12 @@ describe('Instruction model', function () {
         var instruction = new Instruction(1, 10, 10, mockRowDimensions);
         var steps = instruction.generateInstructionSteps();
 
-        expect(steps).toEqual([10]);
+        expect(steps).toEqual(['10 sc']);
 
         instruction = new Instruction(1, 32, 32, mockRowDimensions);
         steps = instruction.generateInstructionSteps();
 
-        expect(steps).toEqual([32]);
+        expect(steps).toEqual(['32 sc']);
     });
 
     it('should generate steps for Instructions that only change by one crochet', function () {
@@ -114,7 +114,7 @@ describe('Instruction model', function () {
         var steps = instruction.generateInstructionSteps();
 
         expect(instruction.generateStepsForSingleChange).toHaveBeenCalledTimes(1);
-        expect(steps).toEqual([4, Instruction.INCREASE, 5]);
+        expect(steps).toEqual(['4 sc', Instruction.INCREASE, '5 sc']);
 
         //-----
 
@@ -124,7 +124,7 @@ describe('Instruction model', function () {
         steps = instruction.generateInstructionSteps();
 
         expect(instruction.generateStepsForSingleChange).toHaveBeenCalledTimes(1);
-        expect(steps).toEqual([4, Instruction.DECREASE, 5]);
+        expect(steps).toEqual(['4 sc', Instruction.DECREASE, '5 sc']);
 
         //-----
 
@@ -134,13 +134,17 @@ describe('Instruction model', function () {
         steps = instruction.generateInstructionSteps();
 
         expect(instruction.generateStepsForSingleChange).toHaveBeenCalledTimes(1);
-        expect(steps).toEqual([74, Instruction.INCREASE, 49]);
+        expect(steps).toEqual(['74 sc', Instruction.INCREASE, '49 sc']);
     });
 
-    it('should return instructions for starting the sphere if it\'s the first row', function () {
+    it('should return instruction text for starting the sphere if it\'s the first row', function () {
         var instruction = new Instruction(0, 0, 6, mockRowDimensions);
+        expect(instruction.getInstructionText()).toBe('Magic circle with 6 sc (6)');
+    });
 
-        expect(instruction.getInstructionText()).toBe('magic circle with 6 sc (6)');
+    it('should return instructions for row', function () {
+        var instruction = new Instruction(1, 6, 12, mockRowDimensions);
+        expect(instruction.getInstructionText()).toBe('inc, inc, inc, inc, inc, inc (12)');
     });
 
     function stepCrochetCounter(steps) {
@@ -155,7 +159,7 @@ describe('Instruction model', function () {
             } else if (currentStep === Instruction.DECREASE){
                 count++;
             } else {
-                count += currentStep;
+                count += parseInt(currentStep);
             }
         }
 

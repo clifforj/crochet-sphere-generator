@@ -8,14 +8,18 @@
 
         function Instruction(rowIndex, previousRowCount, targetRowCount, rowDimensions) {
             this.rowIndex = rowIndex;
-            this.previousRowCount = previousRowCount;
+
+            // if the previous row is zero, then this is the first row
+            this.previousRowCount = previousRowCount === 0 ? targetRowCount : previousRowCount;
             this.targetRowCount = targetRowCount;
+
             this.rowDimensions = rowDimensions;
         }
 
         Instruction.INCREASE = 'inc';
         Instruction.DECREASE = 'dec';
-        Instruction.SINGLE = 'sc';
+        Instruction.SINGLE = ' sc';
+        Instruction.MAGIC_CIRCLE = 'Magic circle with';
 
         Instruction.prototype.generateInstructionSteps = function () {
             var steps = [];
@@ -37,6 +41,12 @@
                 steps = [this.targetRowCount];
             } else {
                 steps = this.generateStepsForMultipleChanges(numSingles, numChange, changeType);
+            }
+
+            for(var i = 0; i < steps.length; i++) {
+                if(!isNaN(steps[i])) {
+                    steps[i] += Instruction.SINGLE;
+                }
             }
 
             return steps;
@@ -87,7 +97,17 @@
         };
 
         Instruction.prototype.generateInstructionText = function () {
-            return 'magic circle with ' + this.targetRowCount + ' sc (' + this.targetRowCount + ')';
+            var text;
+
+            if(this.rowIndex === 0) {
+                text = [Instruction.MAGIC_CIRCLE, this.getInstructionSteps()[0]].join(' ');
+            } else {
+                text = this.getInstructionSteps().join(', ');
+            }
+
+            text += ' (' + this.targetRowCount + ')';
+
+            return text;
         };
 
         Instruction.prototype.getInstructionSteps = function () {
