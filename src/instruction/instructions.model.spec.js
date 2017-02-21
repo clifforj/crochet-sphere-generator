@@ -19,4 +19,11 @@ describe('Instructions model', function () {
         expect(instructions.rowDimensions).toBe(mockRowDimensions);
     });
 
+    it('should create instruction array for the passed row counts', function () {
+        var instructions = new Instructions(mockRowCounts, mockRowDimensions);
+
+        expect(instructions.instructions.length).toBe(3);
+        expect(instructions.rowDimensions).toBe(mockRowDimensions);
+    });
+
 });
