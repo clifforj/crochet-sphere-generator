@@ -144,7 +144,11 @@ describe('Instruction model', function () {
 
     it('should return instructions for row', function () {
         var instruction = new Instruction(1, 6, 12, mockRowDimensions);
+        spyOn(instruction, 'generateInstructionText').and.callThrough();
         expect(instruction.getInstructionText()).toBe('inc, inc, inc, inc, inc, inc (12)');
+        instruction.getInstructionText();
+        expect(instruction.generateInstructionText).toHaveBeenCalledTimes(1); // Make sure text generation is cached
+
     });
 
     function stepCrochetCounter(steps) {

@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('csg')
-        .factory('Instructions', model);
+        .factory('Sphere', model);
 
     model.$inject = ['Instruction'];
     function model(Instruction) {
 
-        function Instructions(rowCounts, rowDimensions) {
+        function Sphere(rowCounts, rowDimensions) {
             this.rowCounts = rowCounts;
             this.rowDimensions = rowDimensions;
 
@@ -22,7 +22,7 @@
             }
         }
 
-        return Instructions;
+        return Sphere;
     }
 
 })(window.angular);

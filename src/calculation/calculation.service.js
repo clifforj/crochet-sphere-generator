@@ -4,7 +4,8 @@
     angular.module('csg')
         .factory('calculationService', calculationService);
 
-    function calculationService() {
+    calculationService.$inject = ['Sphere'];
+    function calculationService(Sphere) {
         // The number of stitches in the first row (keep this number low to avoid flat tops)
         var FIRST_ROW_SIZE = 6;
 
@@ -12,19 +13,19 @@
         var cb = null;
 
         return {
-            generateInstructions: generateInstructions,
+            calculateSphere: calculateSphere,
             refreshCalculationBase: refreshCalculationBase,
             getRowStitchCount: getRowStitchCount,
             getRowDimensions: getRowDimensions
         };
 
-        function generateInstructions(numberOfRows) {
+        function calculateSphere(numberOfRows) {
             refreshCalculationBase(numberOfRows);
 
             var rowStitchCounts = []; // The number of stitches for each row
+            var rowDimensions = []; // The dimensions of the row for diagramming purposes
             var currentRowDimensions;
             var previousRowHeight = 0;
-            var rowDimensions = []; // The dimensions of the row for diagramming purposes
 
             for(var i = 1; i < numberOfRows; i++) {
                 rowStitchCounts.push(getRowStitchCount(i));
@@ -33,6 +34,8 @@
                 previousRowHeight = currentRowDimensions[1]; // Take the previous rows height to save recalculating
                 rowDimensions.push(currentRowDimensions);
             }
+
+            return new Sphere(rowStitchCounts, rowDimensions);
         }
 
         function getRowStitchCount(rowIndex) {

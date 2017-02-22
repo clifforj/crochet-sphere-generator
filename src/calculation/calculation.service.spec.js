@@ -1,16 +1,30 @@
 describe('calculation service', function() {
     var calculationService;
     var calculationBase;
+    var Sphere;
 
-    beforeEach(inject(function (_calculationService_) {
+    beforeEach(inject(function (_calculationService_, _Sphere_) {
         calculationService = _calculationService_;
+        Sphere = _Sphere_;
     }));
 
-    it('should exist', function() {
+    it('should exist', function () {
         expect(calculationService).toBeDefined();
     });
 
-    describe('refreshCalculationBase', function() {
+    describe('calculateSphere', function () {
+        it('should exist', function () {
+            expect(calculationService.calculateSphere).toBeDefined();
+        });
+
+        it('should return a Sphere', function () {
+            var sphere = calculationService.calculateSphere(20);
+            expect(sphere).toBeDefined();
+            expect(sphere instanceof Sphere).toBeTruthy();
+        });
+    });
+
+    describe('refreshCalculationBase', function () {
         it('should exist', function () {
             expect(calculationService.refreshCalculationBase).toBeDefined();
         });
@@ -32,7 +46,7 @@ describe('calculation service', function() {
         });
     });
 
-    describe('getRowStitchCount', function() {
+    describe('getRowStitchCount', function () {
         beforeEach(function () {
             calculationBase = calculationService.refreshCalculationBase(15);
         });
@@ -59,7 +73,7 @@ describe('calculation service', function() {
         });
     });
 
-    describe('getRowDimensions', function() {
+    describe('getRowDimensions', function () {
         beforeEach(function () {
             calculationBase = calculationService.refreshCalculationBase(15);
         });
