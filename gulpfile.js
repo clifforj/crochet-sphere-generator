@@ -42,7 +42,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('js', function() {
-    return gulp.src(['src/csg.module.js', 'src/**/*.js'])
+    return gulp.src(['src/csg.module.js', 'src/**/*.js', '!src/**/*.spec.js'])
         .pipe(concat('app.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/assets/js'));

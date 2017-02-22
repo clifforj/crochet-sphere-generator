@@ -12,8 +12,15 @@
     <div>
         <label for="numberOfRows">Number of rows</label>
         <input id="numberOfRows" type="text" ng-model="vm.numberOfRows">
+        <button ng-click="vm.calculate()" type="button">Calculate</button>
     </div>
 </form>
+
+<ul ng-show="vm.sphere">
+    <li ng-repeat="instruction in vm.sphere.instructions">
+        {{ instruction.getInstructionText() }}
+    </li>
+</ul>
 
     <script src="assets/js/ext.min.js" type="text/javascript"></script>
     <script src="assets/js/app.min.js" type="text/javascript"></script>
