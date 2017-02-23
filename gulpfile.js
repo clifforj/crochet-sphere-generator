@@ -6,6 +6,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var merge =  require('merge-stream');
 var shell = require('gulp-shell');
+var cleanCss = require('gulp-clean-css');
 var Server = require('karma').Server;
 
 var jsDependencies = [
@@ -48,6 +49,13 @@ gulp.task('js', function() {
         .pipe(gulp.dest('dist/assets/js'));
 });
 
+gulp.task('css', function() {
+    return gulp.src(['src/**/*.css'])
+        .pipe(concat('app.min.css'))
+        .pipe(cleanCss())
+        .pipe(gulp.dest('dist/assets/css'));
+});
+
 gulp.task('html', function() {
    return gulp.src('src/index.html')
        .pipe(gulp.dest('dist'));
@@ -66,8 +74,11 @@ gulp.task('dependencies', function() {
 
 gulp.task('watch', function() {
     gulp.watch('src/**/*.js', {cwd:'./'}, ['lint', 'js']);
+    gulp.watch('src/**/*.css', {cwd:'./'}, ['css']);
     gulp.watch('src/index.html', {cwd:'./'}, ['html']);
 });
 
-gulp.task('default', ['dependencies', 'lint', 'js', 'html', 'watch']);
-gulp.task('build', ['dependencies', 'lint', 'js', 'html', 'coveralls']);
+gulp.task('build-app', ['dependencies', 'lint', 'js', 'css', 'html']);
+
+gulp.task('default', ['build-app', 'watch']);
+gulp.task('build', ['build-app', 'coveralls']);
