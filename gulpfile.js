@@ -7,6 +7,7 @@ var rename = require('gulp-rename');
 var merge =  require('merge-stream');
 var shell = require('gulp-shell');
 var cleanCss = require('gulp-clean-css');
+var html2js = require('gulp-html2js');
 var Server = require('karma').Server;
 
 var jsDependencies = [
@@ -61,6 +62,18 @@ gulp.task('html', function() {
        .pipe(gulp.dest('dist'));
 });
 
+gulp.task('templates', function() {
+    return gulp.src(['src/**/*.html', '!src/index.html'])
+        .pipe(html2js('app-templates.min.js', {
+            adapter: 'angular',
+            base: 'src',
+            name: 'csg'
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/assets/js'));
+});
+
+
 gulp.task('dependencies', function() {
     var js = gulp.src(jsDependencies)
         .pipe(concat('ext.min.js'))
@@ -78,7 +91,7 @@ gulp.task('watch', function() {
     gulp.watch('src/index.html', {cwd:'./'}, ['html']);
 });
 
-gulp.task('build-app', ['dependencies', 'lint', 'js', 'css', 'html']);
+gulp.task('build-app', ['dependencies', 'lint', 'js', 'css', 'html', 'templates']);
 
 gulp.task('default', ['build-app', 'watch']);
 gulp.task('build', ['build-app', 'coveralls']);
