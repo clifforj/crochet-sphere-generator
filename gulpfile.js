@@ -18,20 +18,6 @@ var cssDependencies = [
     'node_modules/normalize.css/normalize.css'
 ];
 
-gulp.task('test', function (done) {
-    new Server({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: false
-    }, done).start();
-});
-
-gulp.task('test-once', function (done) {
-    new Server({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: true
-    }, done).start();
-});
-
 gulp.task('coveralls', ['test-once'], function() {
     return gulp.src('gulpfile.js', { read: false })
         .pipe(shell('cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js'));
@@ -89,9 +75,24 @@ gulp.task('watch', function() {
     gulp.watch('src/**/*.js', {cwd:'./'}, ['lint', 'js']);
     gulp.watch('src/**/*.css', {cwd:'./'}, ['css']);
     gulp.watch('src/index.html', {cwd:'./'}, ['html']);
+    gulp.watch(['src/**/*.html', '!src/index.html'], {cwd:'./'}, ['templates']);
 });
 
 gulp.task('build-app', ['dependencies', 'lint', 'js', 'css', 'html', 'templates']);
 
 gulp.task('default', ['build-app', 'watch']);
 gulp.task('build', ['build-app', 'coveralls']);
+
+gulp.task('test', ['build-app'], function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false
+    }, done).start();
+});
+
+gulp.task('test-once', ['build-app'], function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
