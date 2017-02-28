@@ -25,13 +25,12 @@
             var rowStitchCounts = []; // The number of stitches for each row
             var rowDimensions = []; // The dimensions of the row for diagramming purposes
             var currentRowDimensions;
-            var previousRowHeight = 0;
 
             for(var i = 1; i < numberOfRows; i++) {
                 rowStitchCounts.push(getRowStitchCount(i));
 
-                currentRowDimensions = getRowDimensions(i, previousRowHeight);
-                previousRowHeight = currentRowDimensions[1]; // Take the previous rows height to save recalculating
+                currentRowDimensions = getRowDimensions(i);
+
                 rowDimensions.push(currentRowDimensions);
             }
 
@@ -43,19 +42,15 @@
             return Math.round(unscaledRowStitches*cb.stepScale); // Scaled up in line with the initial row size
         }
 
-        function getRowDimensions(rowIndex, previousRowHeight) {
-            var prevHeight = previousRowHeight || 0;
-
-            if(!previousRowHeight) {
-                var prevDistFromCenter = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1)));
-                prevHeight = 1 - prevDistFromCenter;
-            }
+        function getRowDimensions(rowIndex) {
+            var prevDistFromCenter = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1)));
+            var previousRowHeight = 1 - prevDistFromCenter;
 
             var distFromCenter = Math.abs(Math.cos(cb.radiansPerStep*rowIndex));
-            var currentHeight = 1 - distFromCenter;
+            var currentHeight = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1))) - Math.abs(Math.cos(cb.radiansPerStep*rowIndex));
 
             var calculatedWidth = Math.sin(cb.radiansPerStep * rowIndex); // As a percentage of max width
-            var calculatedHeight = Math.abs(currentHeight - prevHeight); // As a percentage of max height
+            var calculatedHeight = Math.abs(currentHeight); // As a percentage of max height
 
             return [calculatedWidth, calculatedHeight];
         }
