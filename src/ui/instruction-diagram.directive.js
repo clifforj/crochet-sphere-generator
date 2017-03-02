@@ -37,7 +37,7 @@
         }
 
         function getRowWidth(rowIndex) {
-            return (vm.latestCalculation.instructions[rowIndex].rowDimensions[0]*150)+'px';
+            return (vm.latestCalculation.instructions[rowIndex].rowDimensions[0]*300)+'px';
         }
     }
 

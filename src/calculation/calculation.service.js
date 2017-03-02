@@ -45,13 +45,15 @@
         function getRowDimensions(rowIndex) {
             var rowStartHeight = Math.cos(cb.radiansPerStep*(rowIndex-1));
             var rowEndHeight = Math.cos(cb.radiansPerStep*rowIndex);
-
             var currentHeight;
             if(rowStartHeight > 0 && rowEndHeight < 0) {
                 currentHeight = rowStartHeight + Math.abs(rowEndHeight);
             } else if(rowStartHeight > 0 && rowEndHeight > 0) {
                 currentHeight = rowStartHeight - rowEndHeight;
             } else {
+                // We've passed the midpoint, so we need to reverse how we calculate height
+                rowStartHeight = Math.cos(cb.radiansPerStep*rowIndex);
+                rowEndHeight = Math.cos(cb.radiansPerStep*(rowIndex+1));
                 currentHeight = Math.abs(rowEndHeight) - Math.abs(rowStartHeight);
             }
 
