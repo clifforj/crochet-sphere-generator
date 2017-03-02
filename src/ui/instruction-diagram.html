@@ -1,4 +1,8 @@
 <div class="instruction-diagram">
     <div class="diagram-row" ng-repeat="instruction in vm.getLatestCalculation().instructions"
-         style="height: {{ vm.getRowHeight($index) }}; width: {{ vm.getRowWidth($index) }}"></div>
+         style="height: {{ vm.getRowHeight($index) }}; width: {{ vm.getRowWidth($index) }}">
+    </div>
+    <div ng-repeat="instruction in vm.getLatestCalculation().instructions">
+        {{ vm.getRowWidth($index) }} x {{ vm.getRowHeight($index) }}
+    </div>
 </div>

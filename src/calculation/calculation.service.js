@@ -43,11 +43,17 @@
         }
 
         function getRowDimensions(rowIndex) {
-            var prevDistFromCenter = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1)));
-            var previousRowHeight = 1 - prevDistFromCenter;
+            var rowStartHeight = Math.cos(cb.radiansPerStep*(rowIndex-1));
+            var rowEndHeight = Math.cos(cb.radiansPerStep*rowIndex);
 
-            var distFromCenter = Math.abs(Math.cos(cb.radiansPerStep*rowIndex));
-            var currentHeight = Math.abs(Math.cos(cb.radiansPerStep*(rowIndex-1))) - Math.abs(Math.cos(cb.radiansPerStep*rowIndex));
+            var currentHeight;
+            if(rowStartHeight > 0 && rowEndHeight < 0) {
+                currentHeight = rowStartHeight + Math.abs(rowEndHeight);
+            } else if(rowStartHeight > 0 && rowEndHeight > 0) {
+                currentHeight = rowStartHeight - rowEndHeight;
+            } else {
+                currentHeight = Math.abs(rowEndHeight) - Math.abs(rowStartHeight);
+            }
 
             var calculatedWidth = Math.sin(cb.radiansPerStep * rowIndex); // As a percentage of max width
             var calculatedHeight = Math.abs(currentHeight); // As a percentage of max height
