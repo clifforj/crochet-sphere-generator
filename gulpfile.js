@@ -8,6 +8,8 @@ var merge =  require('merge-stream');
 var shell = require('gulp-shell');
 var cleanCss = require('gulp-clean-css');
 var html2js = require('gulp-html2js');
+var browserSync = require('browser-sync').create();
+var reload      = browserSync.reload;
 var Server = require('karma').Server;
 
 var jsDependencies = [
@@ -17,6 +19,15 @@ var jsDependencies = [
 var cssDependencies = [
     'node_modules/normalize.css/normalize.css'
 ];
+
+gulp.task('serve', function () {
+    browserSync.init({
+        server: {
+            baseDir: "./dist"
+        }
+    });
+    gulp.watch(['dist/*.html', 'dist/**/*.js', 'dist/**/*.css']).on("change", reload);
+});
 
 gulp.task('coveralls', ['test-once'], function() {
     return gulp.src('gulpfile.js', { read: false })
