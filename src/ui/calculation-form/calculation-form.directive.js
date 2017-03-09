@@ -2,16 +2,17 @@
     'use strict';
 
     angular.module('csg')
-        .directive('instructionPane', instructionPane);
+        .directive('calculationForm', calculationForm);
 
-    function instructionPane() {
+    function calculationForm() {
         return {
             restrict: 'E',
             scope: {},
             controller: Controller,
             controllerAs: 'vm',
             bindToController: true,
-            templateUrl: 'ui/instruction-pane.html'
+            templateUrl: 'ui/calculation-form/calculation-form.html',
+            replace: true
         };
     }
 
@@ -19,15 +20,14 @@
     function Controller(calculationManagerService) {
         var vm = this;
 
-        vm.latestCalculation = getLatestCalculation();
+        vm.numberOfRows = 15;
 
-        vm.getLatestCalculation = getLatestCalculation;
+        vm.calculate = calculate;
 
         /*****/
 
-        function getLatestCalculation() {
-            vm.latestCalculation = calculationManagerService.getLastRetrievedCalculation();
-            return vm.latestCalculation;
+        function calculate() {
+            vm.sphere = calculationManagerService.getCalculation(vm.numberOfRows);
         }
     }
 

@@ -1,0 +1,8 @@
+.instruction-row {
+    border-bottom: 1px solid whitesmoke;
+}
+
+.instruction-entry {
+    padding: 15px 10px;
+    margin: 0;
+}

@@ -1,3 +1,11 @@
+.instruction-diagram {
+    margin: 0 auto;
+    width: 300px;
+    border-radius: 150px;
+    overflow: hidden;
+}
+
 .instruction-diagram .diagram-row {
     background-color: whitesmoke;
+    margin: 0 auto;
 }

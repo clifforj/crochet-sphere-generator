@@ -1,0 +1,15 @@
+#calculation-form {
+    padding: 10px;
+    border-bottom: 1px solid gray;
+}
+
+#number-of-rows {
+    height: 30px;
+    width: 90%;
+    margin: 0 5%;
+}
+
+#calculate {
+    width: 100%;
+    height: 30px;
+}

@@ -1,0 +1,5 @@
+<div class="grid-1-noGutter" ng-show="vm.getLatestCalculation()">
+    <div class="col instruction-row" ng-repeat="instruction in vm.latestCalculation.instructions">
+        <p class="instruction-entry">{{ instruction.getInstructionText() }}</p>
+    </div>
+</div>
