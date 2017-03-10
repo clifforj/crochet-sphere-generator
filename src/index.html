@@ -9,9 +9,19 @@
     <link rel="stylesheet" href="assets/css/app.min.css">
 </head>
 <body ng-controller="CsgController as vm">
-    <calculation-form></calculation-form>
-    <instruction-pane></instruction-pane>
-    <instruction-diagram></instruction-diagram>
+
+    <div class="grid-2-noGutter_md-1">
+        <div class="col">
+            <calculation-form></calculation-form>
+            <instruction-pane></instruction-pane>
+        </div>
+        <div class="col grid-1_md-0_sm-0_xs-0">
+            <div class="col">
+                <instruction-diagram></instruction-diagram>
+            </div>
+        </div>
+    </div>
+
 
     <script src="assets/js/ext.min.js" type="text/javascript"></script>
     <script src="assets/js/app.min.js" type="text/javascript"></script>

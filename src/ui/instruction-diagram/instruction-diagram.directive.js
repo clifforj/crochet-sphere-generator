@@ -11,7 +11,7 @@
             controller: Controller,
             controllerAs: 'vm',
             bindToController: true,
-            templateUrl: 'ui/instruction-diagram.html'
+            templateUrl: 'ui/instruction-diagram/instruction-diagram.html'
         };
     }
 

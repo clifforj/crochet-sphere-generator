@@ -1,3 +1,12 @@
+instruction-diagram {
+    height: 100vh;
+    width: 50vw;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .instruction-diagram {
     margin: 0 auto;
     width: 300px;
